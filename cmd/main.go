@@ -32,8 +32,8 @@ func main() {
 	})
 
 	server.GET("/tasks", TaskController.GetTasks)
-
 	server.POST("/task", TaskController.CreateTask)
+	server.GET("/task/:taskId", TaskController.GetTaskById)
 
 	server.Run(":8000")
 }

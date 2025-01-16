@@ -49,8 +49,8 @@ func (tr *TaskRepository) CreateTask(task model.Task) (int, error) {
 
 	var id int
 	query, err := tr.connection.Prepare("INSERT INTO tasks" +
-		"(task_name, is_deleted)"+
-	" VALUES ($1, $2) RETURNING id")
+		"(task_name, is_deleted)" +
+		" VALUES ($1, $2) RETURNING id")
 
 	if err != nil {
 		fmt.Println(err)
@@ -65,4 +65,31 @@ func (tr *TaskRepository) CreateTask(task model.Task) (int, error) {
 
 	query.Close()
 	return id, nil
+}
+
+func (tr *TaskRepository) GetTaskById(id_task int) (*model.Task, error) {
+
+	query, err := tr.connection.Prepare("SELECT * FROM tasks WHERE id = $1")
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+
+	var task model.Task
+
+	err = query.QueryRow(id_task).Scan(
+		&task.ID,
+		&task.Name,
+		&task.IsDeleted,
+	)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+
+		return nil, err
+	}
+
+	query.Close()
+	return &task, nil
 }
