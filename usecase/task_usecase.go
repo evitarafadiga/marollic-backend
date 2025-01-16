@@ -19,3 +19,14 @@ func (tu *TaskUseCase) GetTasks() ([]model.Task, error) {
 
 	return tu.repository.GetTasks()
 }
+
+func (tu *TaskUseCase) CreateTask(task model.Task) (model.Task, error) {
+
+	taskId, err := tu.repository.CreateTask(task)
+	if (err != nil) {
+		return model.Task{}, err
+	}
+
+	task.ID = taskId
+	return task, nil
+}

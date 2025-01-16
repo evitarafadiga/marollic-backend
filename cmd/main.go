@@ -33,5 +33,7 @@ func main() {
 
 	server.GET("/tasks", TaskController.GetTasks)
 
+	server.POST("/task", TaskController.CreateTask)
+
 	server.Run(":8000")
 }

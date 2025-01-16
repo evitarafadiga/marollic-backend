@@ -1,6 +1,7 @@
 package controller
 
 import (
+	"go-api/model"
 	"go-api/usecase"
 	"net/http"
 
@@ -25,4 +26,22 @@ func (t *taskController) GetTasks(ctx *gin.Context) {
 	}
 
 	ctx.JSON(http.StatusOK, tasks)
+}
+
+func (t *taskController) CreateTask(ctx *gin.Context) {
+	
+	var	task model.Task
+	err := ctx.BindJSON(&task)
+	if err != nil {
+		ctx.JSON(http.StatusBadRequest, err)
+		return
+	}
+
+	insertedTask, err := t.TaskUseCase.CreateTask(task)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, err)
+		return
+	}
+
+	ctx.JSON(http.StatusCreated, insertedTask)
 }
