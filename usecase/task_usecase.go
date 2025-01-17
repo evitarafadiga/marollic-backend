@@ -40,3 +40,14 @@ func (tu *TaskUseCase) GetTaskById(id_task int) (*model.Task, error) {
 
 	return task, nil
 }
+
+func (tu *TaskUseCase) DeleteTaskById(id_task int) (*model.Task, error) {
+
+	task, err := tu.repository.DeleteTaskById(id_task)
+	if err != nil {
+		return nil, err
+	}
+
+	return task, nil
+}
+

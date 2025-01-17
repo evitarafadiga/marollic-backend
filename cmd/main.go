@@ -34,6 +34,7 @@ func main() {
 	server.GET("/tasks", TaskController.GetTasks)
 	server.POST("/task", TaskController.CreateTask)
 	server.GET("/task/:taskId", TaskController.GetTaskById)
+	server.PUT("/task/:taskId", TaskController.DeleteTaskById)
 
 	server.Run(":8000")
 }

@@ -83,3 +83,40 @@ func (t *taskController) GetTaskById(ctx *gin.Context) {
 
 	ctx.JSON(http.StatusOK, task)
 }
+
+func (t *taskController) DeleteTaskById(ctx *gin.Context) {
+
+	id := ctx.Param("taskId")
+	if id == "" {
+		response := model.Response{
+			Message: "Id da tarefa não pode ser nula.",
+		}
+		ctx.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	taskId, err := strconv.Atoi(id)
+	if err != nil {
+		response := model.Response{
+			Message: "Id da tarefa precisa ser um número.",
+		}
+		ctx.JSON(http.StatusBadRequest, response)
+		return
+	}
+
+	task, err := t.TaskUseCase.DeleteTaskById(taskId)
+	if err != nil {
+		ctx.JSON(http.StatusInternalServerError, err)
+		return
+	}
+
+	if task == nil {
+		response := model.Response{
+			Message: "Tarefa removida.",
+		}
+		ctx.JSON(http.StatusOK, response)
+		return
+	}
+
+	ctx.JSON(http.StatusOK, task)
+}

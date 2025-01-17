@@ -93,3 +93,30 @@ func (tr *TaskRepository) GetTaskById(id_task int) (*model.Task, error) {
 	query.Close()
 	return &task, nil
 }
+
+func (tr *TaskRepository) DeleteTaskById(id_task int) (*model.Task, error) {
+
+	query, err := tr.connection.Prepare("UPDATE tasks SET is_deleted = true WHERE id = $1")
+	if err != nil {
+		fmt.Println(err)
+		return nil, err
+	}
+
+	var task model.Task
+
+	err = query.QueryRow(id_task).Scan(
+		&task.ID,
+		&task.Name,
+		&task.IsDeleted,
+	)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			return nil, nil
+		}
+
+		return nil, err
+	}
+
+	query.Close()
+	return &task, nil
+}
