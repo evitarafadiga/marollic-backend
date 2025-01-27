@@ -8,7 +8,7 @@ pipeline {
     }
 
     stages {
-        state('verify') {
+        stage('verify') {
             steps {
                 sh '''
                     docker version
