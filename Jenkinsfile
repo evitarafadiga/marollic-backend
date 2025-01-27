@@ -19,6 +19,7 @@ pipeline {
                 '''
             }
         }
+
         stage('Build') {
             steps {
                 script {
@@ -34,9 +35,7 @@ pipeline {
                 }
             }
         }
-    }
 
-    stages {
         stage('Setup Docker Compose') {
             steps {
                 script {
@@ -48,7 +47,7 @@ pipeline {
             }
         }
 
-        stage('Build') {
+        stage('Build API') {
             steps {
                 script {
                     sh 'go clean'
